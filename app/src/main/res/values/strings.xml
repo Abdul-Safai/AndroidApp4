@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">AndroidApp4</string>
+    <string name="app_name">DailyHadith2025</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="categories">Categories</string>
+    <string name="favorites">Favorites</string>
+
+    <!-- Home -->
+    <string name="daily_hadith_goes_here">Daily Hadith goes here...</string>
+
+    <!-- Item templates -->
+    <string name="hadith_text">Hadith text</string>
+    <string name="hadith_source">- Source</string>
+
+    <!-- Categories -->
+    <string name="back_to_categories">← Back to Categories</string>
+
+    <!-- Favorites -->
+    <string name="no_favorites_yet">No favourites yet. Mark hadiths as favourites to see them here.</string>
 </resources>

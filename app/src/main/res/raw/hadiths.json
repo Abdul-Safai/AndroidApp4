@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "text": "Actions are judged by intentions.",
+    "source": "Bukhari & Muslim",
+    "category": "Faith"
+  },
+  {
+    "id": 2,
+    "text": "The best of you are those who learn the Qur’an and teach it.",
+    "source": "Bukhari",
+    "category": "Knowledge"
+  },
+  {
+    "id": 3,
+    "text": "Smiling at your brother is a charity.",
+    "source": "Tirmidhi",
+    "category": "Character"
+  },
+  {
+    "id": 4,
+    "text": "Whoever believes in Allah and the Last Day should speak good or remain silent.",
+    "source": "Bukhari & Muslim",
+    "category": "Character"
+  },
+  {
+    "id": 5,
+    "text": "The strong person is not the one who can wrestle, but the one who controls himself when angry.",
+    "source": "Bukhari & Muslim",
+    "category": "Self-control"
+  }
+]
