@@ -32,10 +32,8 @@ class HomeFragment : Fragment() {
 
             fun refresh() {
                 star.setImageResource(
-                    if (h.isFavorite)
-                        android.R.drawable.btn_star_big_on
-                    else
-                        android.R.drawable.btn_star_big_off
+                    if (h.isFavorite) android.R.drawable.btn_star_big_on
+                    else android.R.drawable.btn_star_big_off
                 )
             }
 

@@ -15,27 +15,36 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Default screen
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment())
-                .commit()
-        }
+        // Default fragment
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, HomeFragment())
+            .commit()
 
         bottomNav.setOnItemSelectedListener { item ->
-            val fragment = when (item.itemId) {
-                R.id.nav_home -> HomeFragment()
-                R.id.nav_categories -> CategoriesFragment()
-                R.id.nav_favorites -> FavoritesFragment()
-                else -> null
-            }
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, HomeFragment())
+                        .commit()
+                    true
+                }
 
-            fragment?.let {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, it)
-                    .commit()
-                true
-            } ?: false
+                R.id.menu_categories -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, CategoriesFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.menu_favorites -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, FavoritesFragment())
+                        .commit()
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 }
