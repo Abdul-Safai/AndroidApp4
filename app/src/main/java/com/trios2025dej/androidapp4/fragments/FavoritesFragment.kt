@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +14,6 @@ import com.trios2025dej.androidapp4.utils.HadithRepository
 class FavoritesFragment : Fragment() {
 
     private lateinit var adapter: HadithAdapter
-    private lateinit var emptyText: TextView
-    private lateinit var recycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,42 +21,35 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        // ✅ IMPORTANT: use fragment_favorites (NOT fragment_hadith_list)
+        // Use your favorites layout if you have it, otherwise keep fragment_hadith_list
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
 
-        emptyText = view.findViewById(R.id.favorites_empty_text)
-        recycler = view.findViewById(R.id.favorites_recycler_view)
-
+        val recycler = view.findViewById<RecyclerView>(R.id.favorites_recycler_view)
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = HadithAdapter(
-            HadithRepository.getFavoriteHadiths().toMutableList()
-        ) { hadith ->
-            // Unfavorite
+        adapter = HadithAdapter(HadithRepository.getFavoriteHadiths().toMutableList()) { hadith ->
             HadithRepository.toggleFavorite(hadith)
-
-            // Refresh list so it disappears immediately
-            refreshList()
+            adapter.updateData(HadithRepository.getFavoriteHadiths()) // refresh list
+            updateEmptyState(view)
         }
 
         recycler.adapter = adapter
-        refreshList()
-
+        updateEmptyState(view)
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        refreshList()
+        adapter.updateData(HadithRepository.getFavoriteHadiths())
+        view?.let { updateEmptyState(it) }
     }
 
-    private fun refreshList() {
-        val favorites = HadithRepository.getFavoriteHadiths()
+    private fun updateEmptyState(root: View) {
+        val emptyText = root.findViewById<View>(R.id.favorites_empty_text)
+        val recycler = root.findViewById<View>(R.id.favorites_recycler_view)
 
-        // show/hide empty message
-        emptyText.visibility = if (favorites.isEmpty()) View.VISIBLE else View.GONE
-        recycler.visibility = if (favorites.isEmpty()) View.GONE else View.VISIBLE
-
-        adapter.refresh(favorites)
+        val hasFavorites = HadithRepository.getFavoriteHadiths().isNotEmpty()
+        emptyText.visibility = if (hasFavorites) View.GONE else View.VISIBLE
+        recycler.visibility = if (hasFavorites) View.VISIBLE else View.GONE
     }
 }
