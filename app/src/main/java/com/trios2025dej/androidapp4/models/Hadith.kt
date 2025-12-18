@@ -4,5 +4,6 @@ data class Hadith(
     val id: Int,
     val category: String,
     val text: String,
-    val source: String
+    val source: String,
+    var isFavorite: Boolean = false
 )

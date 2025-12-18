@@ -1,11 +1,10 @@
 package com.trios2025dej.androidapp4
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trios2025dej.androidapp4.fragments.CategoriesFragment
-import com.trios2025dej.androidapp4.fragments.HadithListFragment
+import com.trios2025dej.androidapp4.fragments.FavoritesFragment
 import com.trios2025dej.androidapp4.fragments.HomeFragment
 
 class MainActivity : AppCompatActivity() {
@@ -15,21 +14,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> loadFragment(HomeFragment())
-                R.id.nav_categories -> loadFragment(CategoriesFragment())
-                R.id.nav_favorites -> loadFragment(HadithListFragment.newInstance("Faith"))
-            }
-            true
+
+        // Default screen
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment())
+                .commit()
         }
 
-        loadFragment(HomeFragment())
-    }
+        bottomNav.setOnItemSelectedListener { item ->
+            val fragment = when (item.itemId) {
+                R.id.nav_home -> HomeFragment()
+                R.id.nav_categories -> CategoriesFragment()
+                R.id.nav_favorites -> FavoritesFragment()
+                else -> null
+            }
 
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+            fragment?.let {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, it)
+                    .commit()
+                true
+            } ?: false
+        }
     }
 }

@@ -17,12 +17,20 @@ class HadithListFragment : Fragment() {
         private const val ARG_CATEGORY = "category"
 
         fun newInstance(category: String): HadithListFragment {
-            val fragment = HadithListFragment()
-            val args = Bundle()
-            args.putString(ARG_CATEGORY, category)
-            fragment.arguments = args
-            return fragment
+            return HadithListFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_CATEGORY, category)
+                }
+            }
         }
+    }
+
+    private lateinit var adapter: HadithAdapter
+    private var category: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        category = arguments?.getString(ARG_CATEGORY)
     }
 
     override fun onCreateView(
@@ -30,16 +38,20 @@ class HadithListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Make sure this matches the XML file name in res/layout
         val view = inflater.inflate(R.layout.fragment_hadith_list, container, false)
 
-        val category = arguments?.getString(ARG_CATEGORY) ?: ""
-        val hadiths = HadithRepository.getHadithsForCategory(category)
+        val recycler = view.findViewById<RecyclerView>(R.id.hadith_recycler_view)
+        recycler.layoutManager = LinearLayoutManager(requireContext())
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.hadith_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = HadithAdapter(hadiths)
+        val hadiths = HadithRepository
+            .getHadithsForCategory(category ?: "")
+            .toMutableList()
 
+        adapter = HadithAdapter(hadiths) { hadith ->
+            HadithRepository.toggleFavorite(hadith)
+        }
+
+        recycler.adapter = adapter
         return view
     }
 }
